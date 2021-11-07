@@ -1,0 +1,66 @@
+---
+title: "Avocado"
+author: "Aman Kashyap"
+date: "11/5/2021"
+output:
+  html_document: default
+---
+
+## setting up environment
+notes: Setting up environment by loading "tidyverse","ggplot2" and "dplyr" packages
+
+```{r loading packages}
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+```
+##first we upload the Dataset of avocado
+
+```{r}
+avocado <- read.csv("D:\\data_analyst\\SQL practice\\avocado.csv")
+head(avocado)
+```
+### Now we create our First dataFrame 
+notes: In which we find Average sales of Small.Bags,large.Bags,Xlarge.Bags and Total.Bags
+```{r}
+Average_bags<-avocado %>% 
+ group_by(region,year) %>% 
+  summarise(Average_small_bags=mean(Small.Bags),
+            Average_large_bags=mean(Large.Bags),
+            Average_XLarge_bags=mean(XLarge.Bags),
+            Total_bags=mean(Total.Bags))
+
+head(Average_bags)
+```
+### After this we create a Dataframe which have Average Total bags Above 10Lakh
+```{r}
+Total_bags_df<-Average_bags %>% 
+  filter(Total_bags>1000000)
+
+head(Total_bags_df)
+```
+### Here is the Grape Visual of DataFrame 
+Average Total Bags Above 10Lakh
+
+```{r}
+ggplot(data = Total_bags_df)+
+  geom_point(mapping = aes(x=Total_bags,y=year,color=region))+
+  labs(title = "Average Total Bags Above 1000000")
+```
+##Now we create our another Dataframe of Average Total bags below 10000
+
+```{r}
+Total_bags_df1<-Average_bags %>% 
+  filter(Total_bags<10000)
+
+head(Total_bags_df1)
+```
+### Here is the Grape visual of Dataframe 
+Average Total Bags below 10000 
+
+```{r}
+ggplot(data = Total_bags_df1)+
+  geom_point(mapping = aes(x=Total_bags,y=year,color=region))+
+  labs(title = "Average Total Bags under 10000")
+```
+
